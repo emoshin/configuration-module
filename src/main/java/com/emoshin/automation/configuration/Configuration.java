@@ -8,5 +8,5 @@ public interface Configuration {
 
     void put(String paramName, Parameter<?> parameter);
 
-    void merge(Configuration configuration);
+    int size();
 }

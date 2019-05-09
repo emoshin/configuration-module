@@ -65,14 +65,9 @@ public class ConfigurationManager {
             return currentThreadConfiguration.get();
         }
         LOG.info("Configuration was not initialized! Creating empty configuration...");
-        return configurationsMap.computeIfAbsent(threadId, config -> currentThreadConfiguration.get());
+        return configurationsMap.computeIfAbsent(threadId, config -> new ConfigurationImpl());
 
     }
-
-    public void mergeConfigurations(Configuration initialConfiguration, Configuration extendWith) {
-        //Not implemented yet...
-    }
-
 
     private class ConfigurationImpl implements Configuration {
 
@@ -87,6 +82,9 @@ public class ConfigurationManager {
                     value = entry.getValue();
                 }
             }
+            if (null == value) {
+                throw new ParameterNotFoundException(paramName);
+            }
             return value;
         }
 
@@ -98,11 +96,6 @@ public class ConfigurationManager {
         }
 
         @Override
-        public void merge(Configuration configuration) {
-            //Not implemented yet...
-        }
-
-        @Override
         public String toString() {
             StringBuilder stringBuilder = new StringBuilder("[");
             for (Map.Entry<String, Parameter<?>> entry : configurationMap.entrySet()) {
@@ -111,6 +104,11 @@ public class ConfigurationManager {
                         .append(entry.getValue().getValue());
             }
             return stringBuilder.append("\n]").toString();
+        }
+
+        @Override
+        public int size() {
+            return configurationMap.size();
         }
     }
 }

@@ -1,7 +1,5 @@
 package com.emoshin.automation.parameter;
 
-import java.util.Objects;
-
 public class ParameterTypeImpl<T> implements ParameterType<T> {
 
     private final Class<T> type;
@@ -24,11 +22,7 @@ public class ParameterTypeImpl<T> implements ParameterType<T> {
         if (o == null) {
             return false;
         }
-        if (getClass() != o.getClass()) {
-            return false;
-        }
-        ParameterType<T> newObj = (ParameterType<T>) o;
-        return Objects.equals(this.getType(), newObj.getType());
+        return getClass() == o.getClass();
     }
 
     @Override
